@@ -19,6 +19,7 @@ package io.pivotal.literx;
 import java.util.concurrent.CompletableFuture;
 
 import io.pivotal.literx.domain.User;
+import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -43,36 +44,35 @@ public class Part09Adapt {
 
 	// TODO Adapt Flux to RxJava Flowable
 	Flowable<User> fromFluxToFlowable(Flux<User> flux) {
-		return null;
+		return Flowable.fromPublisher(flux);
 	}
 
 	// TODO Adapt RxJava Flowable to Flux
 	Flux<User> fromFlowableToFlux(Flowable<User> flowable) {
-		return null;
+		return  Flux.from(flowable);
 	}
 
 //========================================================================================
 
 	// TODO Adapt Flux to RxJava Observable
 	Observable<User> fromFluxToObservable(Flux<User> flux) {
-		return null;
+		return Flowable.fromPublisher(flux).toObservable();
 	}
 
 	// TODO Adapt RxJava Observable to Flux
 	Flux<User> fromObservableToFlux(Observable<User> observable) {
-		return null;
+		return Flux.from(observable.toFlowable(BackpressureStrategy.DROP.BUFFER.ERROR));
 	}
 
 //========================================================================================
 
 	// TODO Adapt Mono to RxJava Single
-	Single<User> fromMonoToSingle(Mono<User> mono) {
-		return null;
+	Single<User> fromMonoToSingle(Mono<User> mono) {return Single.fromPublisher(mono);
 	}
 
 	// TODO Adapt RxJava Single to Mono
 	Mono<User> fromSingleToMono(Single<User> single) {
-		return null;
+		return Mono.from(single.toFlowable());
 	}
 
 //========================================================================================
